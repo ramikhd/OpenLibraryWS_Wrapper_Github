@@ -40,4 +40,4 @@ steps:
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
       - dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
       - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
-      depends_on: [build]
+    depends_on: [build]

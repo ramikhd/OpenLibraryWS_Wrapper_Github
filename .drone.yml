@@ -23,6 +23,7 @@ steps:
       - dotnet restore OpenLibraryWS_Wrapper.sln
       - dotnet test OpenLibraryWS_Wrapper.sln --no-restore
     depends_on: [build]
+    
   - name: code-inspection
       image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet7
       secrets: [ SECRET_SONAR_LOGIN ]

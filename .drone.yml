@@ -50,3 +50,4 @@ steps:
         path: /docs
     commands:
       - /entrypoint.sh
+    depends_on: [tests]

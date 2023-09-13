@@ -57,4 +57,4 @@ steps:
     depends_on: [tests]
 
 volumes:
-  -name : swaggerVol
+  - name : swaggerVol

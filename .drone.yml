@@ -56,5 +56,5 @@ steps:
       - /entrypoint.sh
     depends_on: [tests]
 
-  volumes:
-    -name : swaggerVol
+volumes:
+  -name : swaggerVol

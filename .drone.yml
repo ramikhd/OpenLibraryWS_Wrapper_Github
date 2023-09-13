@@ -17,7 +17,7 @@ steps:
       - dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
       - dotnet new tool-manifest 
       - dotnet tool install --version 6.5.0 Swashbuckle.AspNetCore.Cli
-      - dotnet swagger tofile --output /swaggerVol/v1/swagger.json ./build/release/OpenLibraryWrapper.dll ./swagger/v1/swagger.json
+      - dotnet swagger tofile --output /swaggerVol/v1/swagger.json ./Sources/OpenLibraryWrapper/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll ./swagger/v1/swagger.json
 
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:7.0

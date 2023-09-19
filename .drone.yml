@@ -10,6 +10,9 @@ trigger:
 steps:
   - name: build
     image: mcr.microsoft.com/dotnet/sdk:7.0
+    volumes:
+      - name: docs
+        path: /docs
     commands:
       - cd Sources
       - dotnet restore OpenLibraryWS_Wrapper.sln
@@ -17,7 +20,7 @@ steps:
       - dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
       - dotnet new tool-manifest 
       - dotnet tool install --version 6.5.0 Swashbuckle.AspNetCore.Cli
-      - dotnet swagger tofile --output /swaggerVol/v1/swagger.json ./Sources/OpenLibraryWrapper/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll ./swagger/v1/swagger.json
+      - cp OpenLibraryWrapper/bin/Debug/net7.0/OpenLibraryWrapper.xml /docs
 
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:7.0
@@ -52,9 +55,10 @@ steps:
       - name: docs
         path: /docs
     commands:
-      - cp /swaggerVol/v1/swagger.json .
+      - cp /docs/OpenLibraryWrapper.xml .
       - /entrypoint.sh
     depends_on: [tests]
 
 volumes:
-  - name : swaggerVol
+  - name : docs
+  - tmp : {}

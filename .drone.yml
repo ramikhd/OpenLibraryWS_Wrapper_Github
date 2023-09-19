@@ -61,4 +61,4 @@ steps:
 
 volumes:
   - name : docs
-  - tmp : {}
+    tmp : {}

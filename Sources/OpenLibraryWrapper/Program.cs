@@ -17,7 +17,17 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-builder.Services.AddSingleton<IDtoManager,OpenLibClientAPI>();
+var SourceData = Environment.GetEnvironmentVariable("SOURCE_DATA");
+
+switch (SourceData)
+{
+    case "STUB":
+        builder.Services.AddSingleton<IDtoManager, Stub>();
+        break;
+    case "API":
+        builder.Services.AddSingleton<IDtoManager, OpenLibClientAPI>();
+        break;
+}
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

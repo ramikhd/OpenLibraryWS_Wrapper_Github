@@ -102,4 +102,5 @@ steps:
         CONTAINERNAME: openlibraryws_wrappermyrepository
         COMMAND: create
         OVERWRITE: true
+        SOURCE_DATA : STUB
     depends_on: [docker-build-and-push]

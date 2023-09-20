@@ -1,34 +1,34 @@
-kind: pipeline
-type: docker
-name: CI
+# kind: pipeline
+# type: docker
+# name: CI
 
 
-trigger:
-  event:
-    - push
+# trigger:
+#   event:
+#     - push
 
-steps:
-  - name: build
-    image: mcr.microsoft.com/dotnet/sdk:7.0
-    volumes:
-      - name: docs
-        path: /docs
-    commands:
-      - cd Sources
-      - dotnet restore OpenLibraryWS_Wrapper.sln
-      - dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
-      - dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
-      - dotnet new tool-manifest 
-      - dotnet tool install --version 6.5.0 Swashbuckle.AspNetCore.Cli
-      - cp OpenLibraryWrapper/bin/Debug/net7.0/OpenLibraryWrapper.xml /docs
+# steps:
+#   - name: build
+#     image: mcr.microsoft.com/dotnet/sdk:7.0
+#     # volumes:
+#     #   - name: docs
+#     #     path: /docs
+#     commands:
+#       - cd Sources
+#       - dotnet restore OpenLibraryWS_Wrapper.sln
+#       - dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
+#       - dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
+#       # - dotnet new tool-manifest 
+#       # - dotnet tool install --version 6.5.0 Swashbuckle.AspNetCore.Cli
+#       # - dotnet swagger tofile --yaml --output /docs/swagger.json OpenLibraryWrapper/bin/Release/net7.0/OpenLibraryWrapper.dll v1
 
-  - name: tests
-    image: mcr.microsoft.com/dotnet/sdk:7.0
-    commands:
-      - cd Sources/
-      - dotnet restore OpenLibraryWS_Wrapper.sln
-      - dotnet test OpenLibraryWS_Wrapper.sln --no-restore
-    depends_on: [build]
+#   - name: tests
+#     image: mcr.microsoft.com/dotnet/sdk:7.0
+#     commands:
+#       - cd Sources/
+#       - dotnet restore OpenLibraryWS_Wrapper.sln
+#       - dotnet test OpenLibraryWS_Wrapper.sln --no-restore
+#     depends_on: [build]
     
   # - name: code-inspection
   #   image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet7
@@ -48,17 +48,51 @@ steps:
   #     - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
   #   depends_on: [build]
 
-  - name: generate-and-deploy-docs
-    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
-    failure: ignore
-    volumes:
-      - name: docs
-        path: /docs
-    commands:
-      - cp /docs/OpenLibraryWrapper.xml .
-      - /entrypoint.sh
-    depends_on: [tests]
+  # - name: generate-and-deploy-docs
+  #   image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
+  #   failure: ignore
+  #   volumes:
+  #     - name: docs
+  #       path: /docs
+  #   commands:
+  #     - cp /docs/OpenLibraryWrapper.xml .
+  #     - /entrypoint.sh
+  #   depends_on: [tests]
 
-volumes:
-  - name : docs
-    tmp : {}
+  
+
+# volumes:
+#   - name : docs
+#     tmp : {}
+
+
+
+# ---
+kind: pipeline
+type: docker
+name: CD
+
+
+trigger:
+  event:
+    - push
+
+steps:
+
+  - name : hadolint
+    image : hadolint/hadolint
+    commands:
+      - hadolint Sources/OpenLibraryWrapper/Dockerfile
+
+  - name: docker-build-and-push
+    image: plugins/docker
+    settings:
+       dockerfile: Sources/OpenLibraryWrapper/Dockerfile
+       context: Sources/
+       registry: hub.codefirst.iut.uca.fr
+       repo: hub.codefirst.iut.uca.fr/rami.khedair/OpenLibraryWS_WrappermyRepository
+       username:
+         from_secret: SECRET_REGISTRY_USERNAME
+       password:
+         from_secret: SECRET_REGISTRY_PASSWORD
+    depends_on: [hadolint]

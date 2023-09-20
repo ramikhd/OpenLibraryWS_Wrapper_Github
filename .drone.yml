@@ -88,7 +88,7 @@ steps:
        dockerfile: Sources/OpenLibraryWrapper/Dockerfile
        context: Sources/
        registry: hub.codefirst.iut.uca.fr
-       repo: hub.codefirst.iut.uca.fr/rami.khedair/OpenLibraryWS_WrappermyRepository
+       repo: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository
        username:
          from_secret: SECRET_REGISTRY_USERNAME
        password:

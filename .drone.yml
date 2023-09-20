@@ -78,7 +78,7 @@ trigger:
 
 steps:
   - name : hadolint
-    image : hadolint/hadolint:latest-lapin
+    image : hadolint/hadolint:latest-alpine
     commands:
       - hadolint Sources/OpenLibraryWrapper/Dockerfile
 

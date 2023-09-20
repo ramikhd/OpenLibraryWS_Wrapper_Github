@@ -65,9 +65,8 @@
 #   - name : docs
 #     tmp : {}
 
-
-
 # ---
+
 kind: pipeline
 type: docker
 name: CD
@@ -78,9 +77,8 @@ trigger:
     - push
 
 steps:
-
   - name : hadolint
-    image : hadolint/hadolint
+    image : hadolint/hadolint:latest-lapin
     commands:
       - hadolint Sources/OpenLibraryWrapper/Dockerfile
 

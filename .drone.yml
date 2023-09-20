@@ -94,3 +94,11 @@ steps:
        password:
          from_secret: SECRET_REGISTRY_PASSWORD
     depends_on: [hadolint]
+
+  - name: deploy-container
+    image: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository
+    environment:
+        IMAGENAME: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository:latest
+        CONTAINERNAME: openlibraryws_wrappermyrepository
+        COMMAND: create
+        OVERWRITE: true

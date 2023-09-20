@@ -96,7 +96,7 @@ steps:
     depends_on: [hadolint]
 
   - name: deploy-container
-    image: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         IMAGENAME: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository:latest
         CONTAINERNAME: openlibraryws_wrappermyrepository

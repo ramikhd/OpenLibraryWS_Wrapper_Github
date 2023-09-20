@@ -102,5 +102,5 @@ steps:
         CONTAINERNAME: openlibraryws_wrappermyrepository
         COMMAND: create
         OVERWRITE: true
-        SOURCE_DATA : STUB
+        CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : STUB
     depends_on: [docker-build-and-push]

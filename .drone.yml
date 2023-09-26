@@ -95,7 +95,7 @@ steps:
          from_secret: SECRET_REGISTRY_PASSWORD
     depends_on: [hadolint]
 
-- name: deploy-container-mariadb
+  - name: deploy-container-mariadb
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         IMAGENAME: mariadb:10

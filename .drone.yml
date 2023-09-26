@@ -101,7 +101,7 @@ steps:
         IMAGENAME: mariadb:10
         CONTAINERNAME: mariadb
         COMMAND: create
-        OVERWRITE: true
+        # OVERWRITE: true
         PRIVATE: false
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
           from_secret: DB_ROOT_PASSWORD
@@ -116,8 +116,6 @@ steps:
   - name: deploy-container
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
-        CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
-          from_secret: DB_ROOT_PASSWORD
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_DATABASE:
           from_secret: DB_DATABASE
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_USER:

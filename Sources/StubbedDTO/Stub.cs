@@ -33,6 +33,7 @@ public class Stub : IDtoManager
             using(StreamReader readerRatings = File.OpenText(ratingsFile))
             {
                 var work = WorkJsonReader.ReadWork(reader.ReadToEnd(), readerRatings.ReadToEnd());
+                if(work.Authors != null)
                 foreach(var author in work.Authors.ToList())
                 {
                     var newAuthor = Authors.SingleOrDefault(a => a.Id == author.Id);
@@ -68,7 +69,7 @@ public class Stub : IDtoManager
 
     public Task<AuthorDTO> GetAuthorById(string id)
     {
-        var author = Stub.Authors.SingleOrDefault(a => a.Id == id);
+        var author = Stub.Authors.SingleOrDefault(a => a.Id.Contains(id));
         return Task.FromResult(author);
     }
 
@@ -147,8 +148,8 @@ public class Stub : IDtoManager
 
     public async Task<Tuple<long, IEnumerable<BookDTO>>> GetBooksByAuthorId(string authorId, int index, int count, string sort = "")
     {
-        var books = Stub.Books.Where(b => b.Authors.Exists(a => a.Id == authorId)
-                                        || b.Works.Exists(w => w.Authors.Exists(a => a.Id == authorId)));
+        var books = Stub.Books.Where(b => b.Authors.Exists(a => a.Id.Contains(authorId))
+                                        || b.Works.Exists(w => w.Authors.Exists(a => a.Id.Contains(authorId))));
         return await OrderBooks(books, index, count, sort);
     }
 
@@ -162,13 +163,15 @@ public class Stub : IDtoManager
     {
         IEnumerable<AuthorDTO> authors = new List<AuthorDTO>();
 
-        if(book.Authors != null)
+        if(book.Authors != null && book.Authors.Count > 0)
         {
             authors = authors.Union(book.Authors);
         }
         if(book.Works != null)
         {
-            authors = authors.Union(book.Works.SelectMany(w => w.Authors));
+            var worksAuthors = book.Works.SelectMany(w => w.Authors).ToList();
+            if(worksAuthors.Count > 0)
+                authors = authors.Union(worksAuthors);
         }
         foreach(var author in authors)
         {

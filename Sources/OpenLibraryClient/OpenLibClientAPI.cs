@@ -86,7 +86,7 @@ public class OpenLibClientAPI : IDtoManager
     public async Task<Tuple<long, IEnumerable<BookDTO>>> GetBooksByAuthorId(string authorId, int index, int count, string sort = "")
     {
         string searchedString = authorId.Trim().Replace(" ", "+");
-        string route = $"{BasePath}{SearchAuthorPrefix}{searchedString}"
+        string route = $"{BasePath}{SearchBookByAuthorPrefix}{searchedString}"
             .AddPagination(index, count)
             .AddSort(sort);
         return await GetElement<Tuple<long, IEnumerable<BookDTO>>>(route, json => BookJsonReader.GetBooksByAuthor(json));

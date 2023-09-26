@@ -95,12 +95,42 @@ steps:
          from_secret: SECRET_REGISTRY_PASSWORD
     depends_on: [hadolint]
 
+- name: deploy-container-mariadb
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+        IMAGENAME: mariadb:10
+        CONTAINERNAME: mariaDb
+        COMMAND: create
+        # OVERWRITE: false
+        PRIVATE: false
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
+          from_secret: db_root_password
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_DATABASE:
+          from_secret: db_database
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_USER:
+          from_secret: db_user
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_PASSWORD:
+          from_secret: db_password
+        ADMINS: ramikhedair
+
   - name: deploy-container
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
+          from_secret: db_root_password
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_DATABASE:
+          from_secret: db_database
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_USER:
+          from_secret: db_user
+        CODEFIRST_CLIENTDRONE_ENV_MARIADB_PASSWORD:
+          from_secret: db_password
         IMAGENAME: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository:latest
         CONTAINERNAME: openlibraryws_wrappermyrepository
         COMMAND: create
         OVERWRITE: true
         CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : STUB
-    depends_on: [docker-build-and-push]
+        CODEFIRST_CLIENTDRONE_ENV_DB_Path : https://codefirst.iut.uca.fr/containers/ramikhedair-mariaDb.
+    depends_on: [docker-build-and-push,deploy-container-mariadb]
+
+  
+

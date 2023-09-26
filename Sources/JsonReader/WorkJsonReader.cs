@@ -23,12 +23,28 @@ namespace JsonReader
                 ratingsDto.Count = (int)r["summary"]["count"];
             }
 
+            string description = null;
+            if(o.TryGetValue("description", out JToken? descr))
+            {
+                if(descr.Type == JTokenType.String)
+                {
+                    description = (string)descr;
+                }
+                else
+                {
+                    if (descr["value"].Type == JTokenType.String)
+                    {
+                        description = (string)descr["value"];
+                    }
+                }
+            }
+
             WorkDTO work = new WorkDTO
             {
                 Id = (string)o["key"],
                 Title = (string)o["title"],
-                Authors = o["authors"].Select(a => new AuthorDTO { Id = (string)a["author"]["key"] }).ToList(),
-                Description = o.TryGetValue("description", out JToken? descr) ? (string)descr : null,
+                Authors = o.TryGetValue("authors", out JToken? authors) ? authors.Select(a => new AuthorDTO { Id = (string)a["author"]["key"] }).ToList() : new List<AuthorDTO>(),
+                Description = description,
                 Subjects = o.TryGetValue("subjects", out JToken? subjects) ? subjects.Select(s => (string)s).ToList() : new List<string>(),
                 Ratings = ratingsDto
             };

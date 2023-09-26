@@ -20,20 +20,35 @@ public static class BookJsonReader
         JObject o = JObject.Parse(json);
         var l = o["languages"]?.FirstOrDefault("");
         Languages lang = l != null ? languages[(string)l["key"]] : Languages.Unknown;
-        Tuple<string, CultureInfo> pubDateFormat = lang switch
-        {
-            Languages.French => Tuple.Create("d MMMM yyyy", CultureInfo.GetCultureInfo("fr-FR")),
-            Languages.Unknown => Tuple.Create("MMM dd, yyyy", CultureInfo.InvariantCulture)
-        };
+        //List<Tuple<string, CultureInfo>> pubDateFormat =new List<Tuple<string, CultureInfo>>()
+        //{
+        //    Tuple.Create("d MMMM yyyy", CultureInfo.GetCultureInfo("fr-FR")),
+        //    Tuple.Create("MMM dd, yyyy", CultureInfo.InvariantCulture)
+        //};
+
+        //DateTime? publishDate = null;
+        //foreach(var format in pubDateFormat)
+        //{
+        //    if(DateTime.TryParseExact((string)o["publish_date"], format.Item1, format.Item2, DateTimeStyles.None, out DateTime readDate))
+        //    {
+        //        publishDate = readDate;
+        //        break;
+        //    }
+        //}
+        //if(!publishDate.HasValue)
+        //{
+        //    publishDate = new DateTime((int)o["publish_date"], 12, 31);
+        //}
+        DateTime? publishDate = AuthorJsonReader.ReadDate((string)o["publish_date"]);
 
         BookDTO book = new BookDTO
         {
             Id = (string)o["key"],
             Title = (string)o["title"],
             Publishers = o["publishers"].Select(p => (string)p).ToList(),
-            PublishDate = DateTime.TryParseExact((string)o["publish_date"], pubDateFormat.Item1, pubDateFormat.Item2, DateTimeStyles.None, out DateTime date) ? date : new DateTime((int)o["publish_date"], 12, 31),
+            PublishDate = publishDate.GetValueOrDefault(DateTime.Now),
             ISBN13 = (string)o["isbn_13"][0],
-            NbPages = (int)o["number_of_pages"],
+            NbPages = o["number_of_pages"] != null ? (int)o["number_of_pages"] : -1,
             Language  = lang,
             Format = o.TryGetValue("physical_format", out JToken? f) ? (string)f : null,
             Works = o["works"].Select(w => new WorkDTO { Id = (string)w["key"] }).ToList(),

@@ -128,7 +128,7 @@ steps:
         CONTAINERNAME: openlibraryws_wrappermyrepository
         COMMAND: create
         OVERWRITE: true
-        CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : STUB
+        CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : MYDBMARIA
         CODEFIRST_CLIENTDRONE_ENV_DB_Path : https://codefirst.iut.uca.fr/containers/ramikhedair-mariaDb.
     depends_on: [docker-build-and-push,deploy-container-mariadb]
 

@@ -99,37 +99,37 @@ steps:
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         IMAGENAME: mariadb:10
-        CONTAINERNAME: mariaDb
+        CONTAINERNAME: mariadb
         COMMAND: create
-        # OVERWRITE: false
+        OVERWRITE: true
         PRIVATE: false
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
-          from_secret: db_root_password
+          from_secret: DB_ROOT_PASSWORD
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_DATABASE:
-          from_secret: db_database
+          from_secret: DB_DATABASE
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_USER:
-          from_secret: db_user
+          from_secret: DB_USER
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_PASSWORD:
-          from_secret: db_password
+          from_secret: DB_PASSWORD
         ADMINS: ramikhedair
 
   - name: deploy-container
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
-          from_secret: db_root_password
+          from_secret: DB_ROOT_PASSWORD
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_DATABASE:
-          from_secret: db_database
+          from_secret: DB_DATABASE
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_USER:
-          from_secret: db_user
+          from_secret: DB_USER
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_PASSWORD:
-          from_secret: db_password
+          from_secret: DB_PASSWORD
         IMAGENAME: hub.codefirst.iut.uca.fr/rami.khedair/openlibraryws_wrappermyrepository:latest
         CONTAINERNAME: openlibraryws_wrappermyrepository
         COMMAND: create
         OVERWRITE: true
         CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : MYDBMARIA
-        CODEFIRST_CLIENTDRONE_ENV_DB_Path : https://codefirst.iut.uca.fr/containers/ramikhedair-mariaDb.
+        CODEFIRST_CLIENTDRONE_ENV_DB_Path : https://codefirst.iut.uca.fr/containers/ramikhedair-mariadb.
     depends_on: [docker-build-and-push,deploy-container-mariadb]
 
   

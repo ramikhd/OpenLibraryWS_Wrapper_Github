@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlTypes;
+using System.Reflection;
 using DtoAbstractLayer;
 using JsonReader;
 using LibraryDTO;
@@ -14,10 +15,12 @@ public class Stub : IDtoManager
 
     public static List<WorkDTO> Works { get; set; } = new List<WorkDTO>();
 
-    public static string BasePath { get; set; } = "";
+    private static string AssemblyPath = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+    public static string BasePath { get; set; } = Path.Combine(AssemblyPath,"..\\..\\..\\..\\StubbedDTO\\");
 
     static Stub()
     {
+
         foreach(var fileAuthor in new DirectoryInfo($"{BasePath}authors/").GetFiles())
         { 
             using(StreamReader reader = File.OpenText(fileAuthor.FullName))

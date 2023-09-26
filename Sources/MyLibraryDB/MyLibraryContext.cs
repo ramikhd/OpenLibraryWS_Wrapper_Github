@@ -21,10 +21,6 @@ public class MyLibraryContext : DbContext
 
     private static DbContextOptions<MyLibraryContext> InitPlaftormDB(string dbPlatformPath)
     {
-        var dbDatabase = Environment.GetEnvironmentVariable("MARIADB_DATABASE", EnvironmentVariableTarget.Process);
-        var dbUser = Environment.GetEnvironmentVariable("MARIADB_USER", EnvironmentVariableTarget.Process);
-        var dbPassword = Environment.GetEnvironmentVariable("MARIADB_PASSWORD", EnvironmentVariableTarget.Process);
-        var dbServer = Environment.GetEnvironmentVariable("DB_SERVER", EnvironmentVariableTarget.Process);
         var options = new DbContextOptionsBuilder<MyLibraryContext>()
             .UseMySql($"{dbPlatformPath}", new MySqlServerVersion(new Version(10, 11, 1)))
             .Options;

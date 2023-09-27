@@ -101,7 +101,7 @@ steps:
         IMAGENAME: mariadb:10
         CONTAINERNAME: mariadb
         COMMAND: create
-        OVERWRITE: true
+        ## OVERWRITE: true
         PRIVATE: false
         CODEFIRST_CLIENTDRONE_ENV_MARIADB_ROOT_PASSWORD:
           from_secret: DB_ROOT_PASSWORD

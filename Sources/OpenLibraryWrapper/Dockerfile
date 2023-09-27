@@ -8,11 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["OpenLibraryWrapper/OpenLibraryWrapper.csproj", "OpenLibraryWrapper/"]
-COPY ["LibraryDTO/LibraryDTO.csproj", "LibraryDTO/"]
-COPY ["StubbedDTO/StubbedDTO.csproj", "StubbedDTO/"]
-COPY ["DtoAbstractLayer/DtoAbstractLayer.csproj", "DtoAbstractLayer/"]
-COPY ["JsonReader/JsonReader.csproj", "JsonReader/"]
-COPY ["OpenLibraryClient/OpenLibraryClient.csproj", "OpenLibraryClient/"]
 RUN dotnet restore "OpenLibraryWrapper/OpenLibraryWrapper.csproj"
 COPY . .
 WORKDIR "/src/OpenLibraryWrapper"

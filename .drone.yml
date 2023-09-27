@@ -126,7 +126,7 @@ steps:
         CONTAINERNAME: openlibraryws_wrappermyrepository
         COMMAND: create
         OVERWRITE: true
-        CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : MYDBMARIA
+        CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : MYDBSTUB
         CODEFIRST_CLIENTDRONE_ENV_DB_PATH : ramikhedair-mariadb
     depends_on: [docker-build-and-push,deploy-container-mariadb]
 

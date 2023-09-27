@@ -39,7 +39,7 @@ switch (SourceData)
         builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>(provider => new MyLibraryMgr(ConnectionString));
         break;
     default:
-        builder.Services.AddSingleton<IDtoManager, Stub>();
+        builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>();
         break;
 
 }

@@ -7,9 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["OpenLibraryWrapper/OpenLibraryWrapper.csproj", "OpenLibraryWrapper/"]
-RUN dotnet restore "OpenLibraryWrapper/OpenLibraryWrapper.csproj"
 COPY . .
+RUN dotnet restore "OpenLibraryWrapper/OpenLibraryWrapper.csproj"
 WORKDIR "/src/OpenLibraryWrapper"
 RUN dotnet build "OpenLibraryWrapper.csproj" -c Release -o /app/build
 

@@ -36,7 +36,7 @@ switch (SourceData)
         string DBPassword = Environment.GetEnvironmentVariable("MARIADB_PASSWORD", EnvironmentVariableTarget.Process);
         string DBPath = Environment.GetEnvironmentVariable("DB_PATH");
         string ConnectionString = $"server={DBPath};port=3306;database={DBDatabase};user={DBUser};password={DBPassword}";
-        builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>(provider => new MyLibraryMgr(DBPath));
+        builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>(provider => new MyLibraryMgr(ConnectionString));
         break;
     default:
         builder.Services.AddSingleton<IDtoManager, Stub>();

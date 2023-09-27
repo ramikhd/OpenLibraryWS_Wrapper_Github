@@ -127,7 +127,7 @@ steps:
         COMMAND: create
         OVERWRITE: true
         CODEFIRST_CLIENTDRONE_ENV_SOURCE_DATA : MYDBMARIA
-        CODEFIRST_CLIENTDRONE_ENV_DB_PATH : https://codefirst.iut.uca.fr/containers/ramikhedair-mariadb.
+        CODEFIRST_CLIENTDRONE_ENV_DB_PATH : ramikhedair-mariadb
     depends_on: [docker-build-and-push,deploy-container-mariadb]
 
   

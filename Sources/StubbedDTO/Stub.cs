@@ -16,7 +16,7 @@ public class Stub : IDtoManager
     public static List<WorkDTO> Works { get; set; } = new List<WorkDTO>();
 
     private static string AssemblyPath = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-    public static string BasePath { get; set; } = Path.Combine(AssemblyPath,"..\\..\\..\\..\\StubbedDTO\\");
+    public static string BasePath { get; set; } = ""; //Path.Combine(AssemblyPath,"..\\..\\..\\..\\StubbedDTO\\");
 
     static Stub()
     {

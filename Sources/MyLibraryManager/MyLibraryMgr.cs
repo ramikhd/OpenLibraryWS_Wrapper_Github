@@ -23,7 +23,7 @@ public class MyLibraryMgr : IDtoManager
         Context.Database.EnsureCreated();
     }
 
-    internal MyLibraryMgr(MyLibraryStubbedContext context)
+    public MyLibraryMgr(MyLibraryStubbedContext context)
     {
         _dbContext = context;
     }

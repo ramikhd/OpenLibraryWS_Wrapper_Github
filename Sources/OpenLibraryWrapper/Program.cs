@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MyLibraryManager;
 using OpenLibraryClient;
+using StubbedDB;
 using StubbedDTO;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,15 +29,24 @@ switch (SourceData)
         builder.Services.AddSingleton<IDtoManager, OpenLibClientAPI>();
         break;
     case "MYDBSTUB":
-        builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>();
+        {
+            string DBDatabase = Environment.GetEnvironmentVariable("MARIADB_DATABASE", EnvironmentVariableTarget.Process);
+            string DBUser = Environment.GetEnvironmentVariable("MARIADB_USER", EnvironmentVariableTarget.Process);
+            string DBPassword = Environment.GetEnvironmentVariable("MARIADB_PASSWORD", EnvironmentVariableTarget.Process);
+            string DBPath = Environment.GetEnvironmentVariable("DB_PATH");
+            string ConnectionString = $"server={DBPath};port=3306;database={DBDatabase};user={DBUser};password={DBPassword}";
+            builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>(provider => new MyLibraryMgr(new MyLibraryStubbedContext(ConnectionString)));
+        }
         break;
     case "MYDBMARIA":
-        string DBDatabase = Environment.GetEnvironmentVariable("MARIADB_DATABASE", EnvironmentVariableTarget.Process);
-        string DBUser = Environment.GetEnvironmentVariable("MARIADB_USER", EnvironmentVariableTarget.Process);
-        string DBPassword = Environment.GetEnvironmentVariable("MARIADB_PASSWORD", EnvironmentVariableTarget.Process);
-        string DBPath = Environment.GetEnvironmentVariable("DB_PATH");
-        string ConnectionString = $"server={DBPath};port=3306;database={DBDatabase};user={DBUser};password={DBPassword}";
-        builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>(provider => new MyLibraryMgr(ConnectionString));
+        {
+            string DBDatabase = Environment.GetEnvironmentVariable("MARIADB_DATABASE", EnvironmentVariableTarget.Process);
+            string DBUser = Environment.GetEnvironmentVariable("MARIADB_USER", EnvironmentVariableTarget.Process);
+            string DBPassword = Environment.GetEnvironmentVariable("MARIADB_PASSWORD", EnvironmentVariableTarget.Process);
+            string DBPath = Environment.GetEnvironmentVariable("DB_PATH");
+            string ConnectionString = $"server={DBPath};port=3306;database={DBDatabase};user={DBUser};password={DBPassword}";
+            builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>(provider => new MyLibraryMgr(ConnectionString));
+        }
         break;
     default:
         builder.Services.AddSingleton<IDtoManager, MyLibraryMgr>();

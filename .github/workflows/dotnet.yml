@@ -29,15 +29,10 @@ jobs:
     - name: Build
       run: |
         cd Sources
-        dotnet restore OpenLibraryWS_Wrapper.sln 
         dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
-    - name: Build 
+    - name: Publish 
       run:  |
-        cd Sources
-        dotnet restore OpenLibraryWS_Wrapper.sln 
-        dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
-        echo "${{ env.DOTNET_INSTALL_DIR }}" 
-        
+        cd Sources     
         dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o ./build/release
   
   test:
@@ -58,6 +53,5 @@ jobs:
     - name: Test
       run: |
         cd Sources
-        dotnet restore OpenLibraryWS_Wrapper.sln
         dotnet test OpenLibraryWS_Wrapper.sln --no-restore
     needs: build

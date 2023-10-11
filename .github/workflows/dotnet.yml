@@ -31,12 +31,14 @@ jobs:
         cd Sources
         dotnet restore OpenLibraryWS_Wrapper.sln 
         dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
-    - run:  |
+    - name: Build 
+      run:  |
         cd Sources
         dotnet restore OpenLibraryWS_Wrapper.sln 
         dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
         echo "${{ env.DOTNET_INSTALL_DIR }}" 
-        dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o ${{ env.DOTNET_INSTALL_DIR }}/build/release
+        
+        dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o ./build/release
   
   test:
     runs-on: ubuntu-latest

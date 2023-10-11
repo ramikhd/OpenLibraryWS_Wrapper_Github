@@ -20,9 +20,13 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    - name: Deplace to project
+      run: cd Sources
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
+    - name: Publish
+      run:  dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test OpenLibraryWS_Wrapper.sln --no-restore

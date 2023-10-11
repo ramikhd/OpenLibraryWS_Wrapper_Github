@@ -23,7 +23,12 @@ jobs:
     - name: Deplace to project
       run: cd Sources
     - name: Restore dependencies 
-      run: dotnet restore OpenLibraryWS_Wrapper.sln
+      run: |
+        pwd
+        echo ----------------
+        ls
+        echo ------------------
+        dotnet restore OpenLibraryWS_Wrapper.sln
     - name: Build
       run: dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
     - name: Publish

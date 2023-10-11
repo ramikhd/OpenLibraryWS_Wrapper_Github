@@ -55,3 +55,27 @@ jobs:
         cd Sources
         dotnet test OpenLibraryWS_Wrapper.sln --no-restore
     needs: build
+  
+  code-inspection:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet7@latest
+        - name : Deplace to project
+          env:
+            super_secret: ${{ secrets.SECRET_SONAR_LOGIN }}
+          run : |
+            cd Sources
+            cd Sources/
+            dotnet restore OpenLibraryWS_Wrapper.sln
+            dotnet sonarscanner begin /k:RamiOpenLibraryWS_Wrapper /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$${PLUGIN_SONAR_TOKEN} 
+            dotnet build OpenLibraryWS_Wrapper.sln -c Release --no-restore
+            dotnet test OpenLibraryWS_Wrapper.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
+            reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
+            dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
+            dotnet sonarscanner end /d:sonar.login="$SECRET_SONAR_LOGIN"
+      needs: build
+
+  
+  
+  
+  

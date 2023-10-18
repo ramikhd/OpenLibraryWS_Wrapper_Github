@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: CI
 
 on:
   push:
@@ -99,7 +99,22 @@ jobs:
               dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
               ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
        needs: build
+---
+name: CD
 
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  hadolint : 
+  runs-on: ubuntu-latest
+  steps : 
+    - uses: hadolint/hadolint:latest-alpine
+    - name: Verify DockerFile
+       run: hadolint Sources/OpenLibraryWrapper/Dockerfile
   
   
   

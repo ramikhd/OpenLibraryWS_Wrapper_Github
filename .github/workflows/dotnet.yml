@@ -110,11 +110,11 @@ on:
 
 jobs:
   hadolint : 
-  runs-on: ubuntu-latest
-  steps : 
-    - uses: hadolint/hadolint:latest-alpine
-    - name: Verify DockerFile
-       run: hadolint Sources/OpenLibraryWrapper/Dockerfile
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Sources/OpenLibraryWrapper/Dockerfile
   
   
   

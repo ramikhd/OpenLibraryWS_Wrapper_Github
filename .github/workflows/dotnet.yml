@@ -92,7 +92,7 @@ jobs:
             shell: powershell
             run: |
              cd Sources/
-              ..\.sonar\scanner\dotnet-sonarscanner begin /k:"RamiOpenLibraryWS_Wrapper_Github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"  /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$${PLUGIN_SONAR_TOKEN} 
+              ..\.sonar\scanner\dotnet-sonarscanner begin /k:"RamiOpenLibraryWS_Wrapper_Github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" 
               dotnet build
               dotnet test OpenLibraryWS_Wrapper.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
               ..\.sonar\scanner\reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"

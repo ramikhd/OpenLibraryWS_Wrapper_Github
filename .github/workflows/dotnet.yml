@@ -85,6 +85,7 @@ jobs:
             run: |
               New-Item -Path .\.sonar\scanner -ItemType Directory
               dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+              dotnet tool update dotnet-reportgenerator-globaltool -g --version 4.8.7 --tool-path .\.sonar\scanner
           - name: Build and analyze
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -94,7 +95,7 @@ jobs:
               ..\.sonar\scanner\dotnet-sonarscanner begin /k:"RamiOpenLibraryWS_Wrapper_Github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
               dotnet build
               dotnet test OpenLibraryWS_Wrapper.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
-              reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
+              ..\.sonar\scanner\dotnet-reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
               dotnet publish OpenLibraryWS_Wrapper.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
               ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
        needs: build

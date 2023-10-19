@@ -110,6 +110,7 @@ jobs:
          - uses: hadolint/hadolint-action@v3.1.0
            with:
                 dockerfile: Sources/OpenLibraryWrapper/Dockerfile
+        needs: build
 
   
     
@@ -151,6 +152,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+    needs: hadolint
   
       
         
